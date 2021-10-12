@@ -1,5 +1,5 @@
 //Sets each ID to 1
-let [elevatorID,FloorRequestButtonID,callButtonID] = [1,1,1];
+let [elevatorID,floorRequestButtonID,callButtonID] = [1,1,1];
 
 //Defines a Column
 class Column {
@@ -120,10 +120,10 @@ class Elevator {
     createFloorRequestButtons(amountOfFloors){
         let buttonFloor = 1;
         for (let i = 0; i < amountOfFloors; i++) {
-            let floorRequestButton = new FloorRequestButton(FloorRequestButtonID, buttonFloor);
+            let floorRequestButton = new FloorRequestButton(floorRequestButtonID, buttonFloor);
             this.floorRequestButtonList.push(floorRequestButton);
             buttonFloor++;
-            FloorRequestButtonID++;
+            floorRequestButtonID++;
         }
     }
     
