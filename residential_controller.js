@@ -48,12 +48,13 @@ class Column {
     }
 
     findElevator(requestedFloor, requestedDirection) {
-        let bestElevator = new Elevator();
+        let bestElevator = this.elevatorList[0];
         let bestScore = 5;
         let referenceGap = 10000000;
         let bestElevatorInformations = {bestElevator : bestElevator, bestScore : bestScore, referenceGap : referenceGap};
 
         for (let i = 0; i < this.elevatorList.length; i++) {
+
             if (requestedFloor == this.elevatorList[i].currentFloor && this.elevatorList[i].status == 'stopped' && requestedDirection == this.elevatorList[i].direction) {
                 bestElevatorInformations = this.checkIfElevatorIsBetter(1, this.elevatorList[i], bestScore, referenceGap, bestElevator, requestedFloor);
             }
@@ -70,13 +71,15 @@ class Column {
                 bestElevatorInformations = this.checkIfElevatorIsBetter(4, this.elevatorList[i], bestScore, referenceGap, bestElevator, requestedFloor);
             }
 
-            bestElevatorInformations = {bestElevator : bestElevator, bestScore : bestScore, referenceGap : referenceGap};
+            bestElevator = bestElevatorInformations.bestElevator;
+            bestScore = bestElevatorInformations.bestScore;
+            referenceGap = bestElevatorInformations.referenceGap;
         }
 
-        return bestElevator;
+        return bestElevatorInformations.bestElevator;
     }
 
-    checkIfElevatorIsBetter(scoreToCheck, newElevator, bestScore, referenceGap, bestElevator, Floor) {
+    checkIfElevatorIsBetter(scoreToCheck, newElevator, bestScore, referenceGap, bestElevator, Floor) { 
         if (scoreToCheck < bestScore) {
             bestScore = scoreToCheck;
             bestElevator = newElevator;
@@ -89,7 +92,7 @@ class Column {
                 referenceGap = Gap;
             }
         }
-        let bestElevatorInformations = {bestElevator, bestScore, referenceGap};
+        let bestElevatorInformations = {bestElevator : bestElevator, bestScore : bestScore, referenceGap : referenceGap};
         return bestElevatorInformations;
     }
 
@@ -126,11 +129,11 @@ class Elevator {
     }
 
     move(){
-        while (this.floorRequestList.length > 0) {
+        while (this.floorRequestList.length != 0) {
             let Destination = this.floorRequestList[0]
             this.status = 'moving';
             if (this.currentFloor < Destination) {
-                Destination = 1;
+                this.direction = 'up';
                 this.sortFloorList();
                 while (this.currentFloor < Destination) {
                     this.currentFloor++;
@@ -138,7 +141,7 @@ class Elevator {
                 }
             }
             else if (this.currentFloor > Destination) {
-                this.Destination = -1;
+                this.direction = 'down';
                 this.sortFloorList();
                 while (this.currentFloor > Destination) {
                     this.currentFloor--;
@@ -146,13 +149,14 @@ class Elevator {
                 }
             }
             this.status = 'stopped'
-            this.floorRequestList.splice(0, 1);
+            this.operateDoors();
+            this.floorRequestList.shift();
         }
         this.status = 'idle';
     }
 
     sortFloorList(){
-        if (this.direction == 1) {
+        if (this.direction == 'up') {
             this.floorRequestList.sort((a, b) => a - b);
         }
         else{
@@ -162,9 +166,13 @@ class Elevator {
 
     operateDoors(){
         this.door.status = 'opened';
-        setTimeout(() => {
-            this.door.status = 'closed';
-        }, 5000);
+        /*
+        Wait 5 seconds before closing the doors
+        */
+        //setTimeout(() => {
+        //    this.door.status = 'closed'; 
+        //}, 5000);
+        this.door.status = 'closed';
     }
 }
 
