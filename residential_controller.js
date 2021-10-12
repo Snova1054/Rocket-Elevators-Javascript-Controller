@@ -10,6 +10,7 @@ class Column {
         this.amountOfElevators = _amountOfElevators;
         this.elevatorList = [];
         this.callButtonList = [];
+        console.log(this.amountOfFloors, "Floors created and", this.amountOfElevators, "Elevators created");
         
         this.createElevators(this.amountOfFloors, this.amountOfElevators);
         this.createCallButtons(this.amountOfFloors);
@@ -42,7 +43,9 @@ class Column {
     }
     //Requests an Elevator according a Floor and a Direction choosing the best Elevator
     requestElevator(Floor, Direction) {
+        console.log("Requesting an Elevator for floor # :", Floor, "to go", Direction);
         let elevator = this.findElevator(Floor, Direction);
+        console.log("Best Elevator ID is :", elevator.ID);
         elevator.floorRequestList.push(Floor);
         elevator.move();
         elevator.operateDoors();
@@ -103,7 +106,7 @@ class Column {
 class Elevator {
     constructor(_id, _amountOfFloors, _currentFloor) {
         this.ID = _id;
-        this.status = 'stopped';
+        this.status = 'idle';
         this.amountOfFloors = _amountOfFloors;
         this.currentFloor = _currentFloor;
         this.direction = 'idle';
@@ -126,6 +129,7 @@ class Elevator {
     
     //Adds the requested Floor to a requests List and call the move() method of the Elevator and the operateDoors() method
     requestFloor(Floor){
+        console.log("New requested floor is :", Floor);
         this.floorRequestList.push(Floor);
         this.move();
         this.operateDoors();
@@ -139,6 +143,7 @@ class Elevator {
                 this.direction = 'up';
                 this.sortFloorList();
                 while (this.currentFloor < Destination) {
+                console.log("Elevator's current floor is :", this.currentFloor);
                     this.currentFloor++;
                     this.screenDisplay = this.currentFloor;
                 }
@@ -147,15 +152,16 @@ class Elevator {
                 this.direction = 'down';
                 this.sortFloorList();
                 while (this.currentFloor > Destination) {
+                console.log("Elevator's current floor is :", this.currentFloor);
                     this.currentFloor--;
                     this.screenDisplay = this.currentFloor;
                 }
             }
             this.status = 'stopped'
-            this.operateDoors();
             this.floorRequestList.shift();
         }
         this.status = 'idle';
+        console.log("Elevator's arrived at floor # :", this.currentFloor);
     }
     //Sorts the floor requests List according to the Direction of the Elevator
     sortFloorList(){
@@ -169,13 +175,16 @@ class Elevator {
     //Opens and Closes the Doors of the Elevator
     operateDoors(){
         this.door.status = 'opened';
+        console.log("Elevator's doors are opened");
         /*
         Wait 5 seconds before closing the doors
         */
         //setTimeout(() => {
         //    this.door.status = 'closed'; 
         //}, 5000);
+        console.log("Waiting 5 seconds");
         this.door.status = 'closed';
+        console.log("Elevator's doors are closed");
     }
 }
 //Defines a Call Button
@@ -202,4 +211,5 @@ class Door {
         this.status = 'off';
     }
 }
+
 module.exports = { Column, Elevator, CallButton, FloorRequestButton, Door }
