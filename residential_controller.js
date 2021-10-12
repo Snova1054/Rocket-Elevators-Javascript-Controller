@@ -1,5 +1,7 @@
+//Sets each ID to 1
 let [elevatorID,FloorRequestButtonID,callButtonID] = [1,1,1];
 
+//Defines a Column
 class Column {
     constructor(_id, _amountOfFloors, _amountOfElevators) {
         this.ID = _id;
@@ -12,7 +14,7 @@ class Column {
         this.createElevators(this.amountOfFloors, this.amountOfElevators);
         this.createCallButtons(this.amountOfFloors);
     }
-
+    //Creates call Button according to the number of Floors
     createCallButtons(amountOfFloors){
         let buttonFloor = 1;
 
@@ -30,7 +32,7 @@ class Column {
             buttonFloor++;
         }
     }
-
+    //Creates Elevators according to the number of Floors and the number of Elevators
     createElevators(amountOfFloors, amountOfElevators) {
         for (let i = 0; i < amountOfElevators; i++) {
             let elevator = new Elevator(elevatorID, amountOfFloors, 1);
@@ -38,7 +40,7 @@ class Column {
             elevatorID++;
         }
     }
-
+    //Requests an Elevator according a Floor and a Direction choosing the best Elevator
     requestElevator(Floor, Direction) {
         let elevator = this.findElevator(Floor, Direction);
         elevator.floorRequestList.push(Floor);
@@ -46,7 +48,7 @@ class Column {
         elevator.operateDoors();
         return elevator;
     }
-
+    //Finds the best Elevator according to the requested Floor and Direction
     findElevator(requestedFloor, requestedDirection) {
         let bestElevator = this.elevatorList[0];
         let bestScore = 5;
@@ -78,7 +80,7 @@ class Column {
 
         return bestElevatorInformations.bestElevator;
     }
-
+    //Compares each Elevators to find the best
     checkIfElevatorIsBetter(scoreToCheck, newElevator, bestScore, referenceGap, bestElevator, Floor) { 
         if (scoreToCheck < bestScore) {
             bestScore = scoreToCheck;
@@ -97,7 +99,7 @@ class Column {
     }
 
 }
-
+//Defines an Elevator
 class Elevator {
     constructor(_id, _amountOfFloors, _currentFloor) {
         this.ID = _id;
@@ -111,7 +113,7 @@ class Elevator {
 
         this.createFloorRequestButtons(_amountOfFloors);
     }
-
+    //Creates a Floor request Button in each Elevator according to the number of Floors
     createFloorRequestButtons(amountOfFloors){
         let buttonFloor = 1;
         for (let i = 0; i < amountOfFloors; i++) {
@@ -121,13 +123,14 @@ class Elevator {
             FloorRequestButtonID++;
         }
     }
-
+    
+    //Adds the requested Floor to a requests List and call the move() method of the Elevator and the operateDoors() method
     requestFloor(Floor){
         this.floorRequestList.push(Floor);
         this.move();
         this.operateDoors();
     }
-
+    //Moves the Elevator to the requested Floor
     move(){
         while (this.floorRequestList.length != 0) {
             let Destination = this.floorRequestList[0]
@@ -154,7 +157,7 @@ class Elevator {
         }
         this.status = 'idle';
     }
-
+    //Sorts the floor requests List according to the Direction of the Elevator
     sortFloorList(){
         if (this.direction == 'up') {
             this.floorRequestList.sort((a, b) => a - b);
@@ -163,7 +166,7 @@ class Elevator {
             this.floorRequestList.sort((a, b) => b - a);
         }
     }
-
+    //Opens and Closes the Doors of the Elevator
     operateDoors(){
         this.door.status = 'opened';
         /*
@@ -175,7 +178,7 @@ class Elevator {
         this.door.status = 'closed';
     }
 }
-
+//Defines a Call Button
 class CallButton {
     constructor(_id, _floor, _direction) {
         this.ID = _id;
@@ -184,7 +187,7 @@ class CallButton {
         this.direction = _direction;
     }
 }
-
+//Defines a Floor Request Button
 class FloorRequestButton {
     constructor(_id, _floor) {
         this.ID = _id;
@@ -192,7 +195,7 @@ class FloorRequestButton {
         this.floor = _floor;
     }
 }
-
+//Defines a Door
 class Door {
     constructor(_id,) {
         this.ID = _id;
