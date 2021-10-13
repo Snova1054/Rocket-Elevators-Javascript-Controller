@@ -159,7 +159,7 @@ class Elevator {
             this.floorRequestList.shift();
         }
         this.status = 'idle';
-        console.log("Elevator's arrived at floor # :", this.currentFloor);
+        console.log("Elevator's arrived at the floor # :", this.currentFloor);
     }
     //Sorts the floor requests List according to the Direction of the Elevator
     sortFloorList(){
