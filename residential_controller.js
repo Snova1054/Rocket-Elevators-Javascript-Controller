@@ -114,7 +114,7 @@ class Elevator {
         this.floorRequestButtonList = [];
         this.floorRequestList = [];
 
-        this.createFloorRequestButtons(_amountOfFloors);
+        this.createFloorRequestButtons(this.amountOfFloors);
     }
     //Creates a Floor request Button in each Elevator according to the number of Floors
     createFloorRequestButtons(amountOfFloors){
@@ -145,7 +145,6 @@ class Elevator {
                 while (this.currentFloor < Destination) {
                 console.log("Elevator's current floor is :", this.currentFloor);
                     this.currentFloor++;
-                    this.screenDisplay = this.currentFloor;
                 }
             }
             else if (this.currentFloor > Destination) {
@@ -154,7 +153,6 @@ class Elevator {
                 while (this.currentFloor > Destination) {
                 console.log("Elevator's current floor is :", this.currentFloor);
                     this.currentFloor--;
-                    this.screenDisplay = this.currentFloor;
                 }
             }
             this.status = 'stopped'
