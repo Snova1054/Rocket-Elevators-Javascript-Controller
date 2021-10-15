@@ -139,6 +139,7 @@ class Elevator {
         while (this.floorRequestList.length != 0) {
             let Destination = this.floorRequestList[0]
             this.status = 'moving';
+            
             if (this.currentFloor < Destination) {
                 this.direction = 'up';
                 this.sortFloorList();
@@ -210,4 +211,3 @@ class Door {
     }
 }
 
-module.exports = { Column, Elevator, CallButton, FloorRequestButton, Door }
