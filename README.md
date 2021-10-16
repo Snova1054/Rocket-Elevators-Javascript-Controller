@@ -50,7 +50,7 @@ bestElevator.requestFloor(floor)
 npm install
 ```
 
-and then, to run the tests with:
+and then, to run the tests, input:
 
 ```
 npm test
